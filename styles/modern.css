@@ -1579,3 +1579,147 @@ main {
 .login-button:hover {
     background: #4752c4;
 }
+
+.canary-section {
+    background-color: var(--bg-darker);
+    padding: 4rem 0;
+}
+
+.canary-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.canary-icon {
+    font-size: 3rem;
+    color: #FFD700;
+}
+
+.canary-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.canary-features {
+    margin: 1.5rem 0;
+}
+
+.canary-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.canary-features li {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.canary-warning {
+    background: rgba(255, 215, 0, 0.1);
+    border-left: 4px solid #FFD700;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.canary-warning i {
+    color: #FFD700;
+}
+
+.canary-obs {
+    margin-top: 2rem;
+    background: rgba(88, 101, 242, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #5865F2;
+}
+
+.obs-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.obs-header i {
+    color: #5865F2;
+    font-size: 1.2rem;
+}
+
+.obs-header h4 {
+    color: #5865F2;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.obs-rewards {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.obs-rewards h5 {
+    color: #5865F2;
+    font-size: 1rem;
+    margin: 1rem 0;
+}
+
+.obs-rewards ul {
+    list-style: none;
+    padding: 0;
+}
+
+.obs-rewards li {
+    display: flex;
+    align-items: center; /* Mudado de flex-start para center */
+    gap: 1rem;
+    background: rgba(88, 101, 242, 0.05);
+    padding: 0.8rem 1rem; /* Reduzido o padding */
+    margin: 0.8rem 0;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.reward-info {
+    display: flex;
+    align-items: center; /* Adicionado para alinhar verticalmente */
+    flex-wrap: wrap; /* Permite quebra de linha para telas menores */
+    gap: 0.5rem; /* Espaçamento entre os elementos */
+}
+
+.obs-rewards i {
+    color: #5865F2;
+    font-size: 1.2rem;
+    padding-top: 0.2rem;
+}
+
+.soon-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem; /* Reduzido o tamanho da fonte */
+    background: rgba(88, 101, 242, 0.15);
+    padding: 0.15rem 0.5rem; /* Reduzido o padding vertical */
+    border-radius: 4px;
+    color: #5865F2;
+    font-weight: 600;
+    height: 1.5rem; /* Altura fixa para manter consistência */
+    white-space: nowrap; /* Evita quebra de linha */
+}
+
+.soon-tag {
+    font-size: 0.7rem;
+    background: rgba(88, 101, 242, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    color: #5865F2;
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
