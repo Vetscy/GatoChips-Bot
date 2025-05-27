@@ -1,9 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Função para obter parâmetros da URL
-    function getUrlParameter(name) {
+    // Função para obter parâmetros da URL (tanto da query string quanto do hash fragment)
+    function getUrlParameter(name, fromHash = false) {
+        let searchString;
+        if (fromHash) {
+            // Obter parâmetros do hash fragment (#access_token=...)
+            searchString = window.location.hash.slice(1);
+        } else {
+            // Obter parâmetros da query string (?code=...)
+            searchString = window.location.search;
+        }
+        
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
+        var results = regex.exec(searchString);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 
@@ -74,6 +83,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Função para buscar informações do usuário usando o token de acesso
+    function fetchUserInfo(accessToken, tokenType) {
+        return fetch('https://discord.com/api/users/@me', {
+            headers: {
+                'Authorization': `${tokenType} ${accessToken}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Falha ao obter informações do usuário: ' + response.status);
+            }
+            return response.json();
+        });
+    }
+
     // Verificar se há erros na URL
     if (checkForErrors()) {
         return;
@@ -84,7 +108,47 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Verificar se há um código de autorização na URL
+    // Verificar se temos um token de acesso no hash da URL (fluxo implícito)
+    const accessToken = getUrlParameter('access_token', true);
+    const tokenType = getUrlParameter('token_type', true);
+    
+    if (accessToken) {
+        // Mostrar indicador de carregamento
+        const loginButton = document.querySelector('.login-button');
+        if (loginButton) {
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
+        }
+
+        // Buscar informações do usuário usando o token
+        fetchUserInfo(accessToken, tokenType)
+            .then(userData => {
+                // Salvar dados do usuário no localStorage
+                localStorage.setItem('discord_user', JSON.stringify(userData));
+                localStorage.setItem('discord_token', accessToken);
+                
+                // Atualizar o botão de login
+                updateLoginButton(userData);
+                
+                // Limpar o hash da URL para evitar reautenticação em recarregamentos
+                window.history.replaceState({}, document.title, window.location.pathname);
+            })
+            .catch(error => {
+                console.error('Erro ao obter dados do usuário:', error);
+                const loginButton = document.querySelector('.login-button');
+                if (loginButton) {
+                    loginButton.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao conectar';
+                    loginButton.classList.add('login-error');
+                    
+                    // Restaurar botão após 3 segundos
+                    setTimeout(() => {
+                        loginButton.innerHTML = '<i class="fab fa-discord"></i> Login';
+                        loginButton.classList.remove('login-error');
+                    }, 3000);
+                }
+            });
+    }
+    
+    // Verificar se há um código de autorização na URL (fluxo de código de autorização)
     const code = getUrlParameter('code');
     
     if (code) {
@@ -94,7 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
             loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
         }
 
-        // Simular a obtenção de dados do usuário (em um cenário real, você faria uma solicitação ao seu backend)
+        // Nota: Normalmente, você enviaria este código para seu backend para trocá-lo por um token
+        // Como este é um exemplo frontend, vamos apenas simular o sucesso do login
         setTimeout(function() {
             // Dados simulados do usuário
             const mockUser = {
